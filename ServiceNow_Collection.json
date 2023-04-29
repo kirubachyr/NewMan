@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "d456a3e5-5a9b-4824-875b-91508530fd3d",
+		"name": "ServiceNow_NewMan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18850617",
+		"_collection_link": "https://orange-spaceship-214711.postman.co/workspace/Postman~0031864d-f59b-4575-ac96-696ba9795ad8/collection/18850617-d456a3e5-5a9b-4824-875b-91508530fd3d?action=share&creator=18850617&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Create a Incident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonResponse = pm.response.json();",
+							"",
+							"let sys_ID= jsonResponse.result.sys_id;",
+							"console.log(\"sys id is : \"+sys_ID);",
+							"//Assign the local variable to collection variable",
+							"",
+							"    pm.collectionVariables.set(\"sys_id\", sys_ID);",
+							"",
+							"//get the Collection variable",
+							"console.log(pm.collectionVariables.get(\"sys_id\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{server-name}}/api/now/table/{{table-name}}",
+					"protocol": "https",
+					"host": [
+						"{{server-name}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{table-name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the incident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n    \"description\": \"description added through api\",\n    \"origin_id\": \"143341\"\n   \n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{server-name}}/api/now/table/{{table-name}}/{{sys_id}}",
+					"protocol": "https",
+					"host": [
+						"{{server-name}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{table-name}}",
+						"{{sys_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve specific set of details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Get the response as json",
+							"let jsonResponse = pm.response.json();",
+							"",
+							"//Length of the array of object",
+							"let objArraylength = jsonResponse.result.length;",
+							"console.log('Length of the array is : '+objArraylength);",
+							"",
+							"//Generate Random Number",
+							"let randomInt = (Math.floor((Math.random())*objArraylength-1)+1);",
+							"console.log(\"Random values is: \"+ randomInt);",
+							"",
+							"//Get the randomly Geneated Sys_ID",
+							"let sys_ID = jsonResponse.result[randomInt].sys_id;",
+							"console.log(\"Random sys_ID is :\" +sys_ID);",
+							"",
+							"//set therandom sysid to collection variable",
+							"pm.collectionVariables.set(\"sys_id\",sys_ID);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{server-name}}/api/now/table/{{table-name}}?sysparm_fields=number,sys_id,short_description",
+					"protocol": "https",
+					"host": [
+						"{{server-name}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{table-name}}"
+					],
+					"query": [
+						{
+							"key": "sysparm_fields",
+							"value": "number,sys_id,short_description"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a incident Copy based on generated SysID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{server-name}}/api/now/table/{{table-name}}/{{sys_id}}",
+					"protocol": "https",
+					"host": [
+						"{{server-name}}"
+					],
+					"path": [
+						"api",
+						"now",
+						"table",
+						"{{table-name}}",
+						"{{sys_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "lII2W0Qr+z^r",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "sys_id",
+			"value": ""
+		}
+	]
+}
